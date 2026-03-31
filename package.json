@@ -1,0 +1,29 @@
+{
+  "name": "github-graph-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "import": "ts-node --project tsconfig.scripts.json scripts/import-github.ts",
+    "import:seed": "ts-node --project tsconfig.scripts.json scripts/import-github.ts --seed"
+  },
+  "dependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/dotenv": "^6.1.1",
+    "d3": "^7.9.0",
+    "dotenv": "^17.3.1",
+    "neo4j-driver": "^5.18.0",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.0"
+  }
+}

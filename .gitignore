@@ -1,0 +1,10 @@
+node_modules/
+.next/
+dist-scripts/
+.env.local
+.env
+*.env
+
+# Neo4j downloaded credentials
+*.txt.downloaded
+Neo4j-*-credentials.txt

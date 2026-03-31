@@ -1,0 +1,35 @@
+[build]
+  command   = "npm run build"
+  publish   = ".next"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NEXT_USE_NETLIFY_EDGE = "true"
+
+# Redirect /api/* to the corresponding Netlify function
+[[redirects]]
+  from   = "/api/user/:login"
+  to     = "/.netlify/functions/user-graph?login=:login"
+  status = 200
+
+[[redirects]]
+  from   = "/api/graph"
+  to     = "/.netlify/functions/graph-overview"
+  status = 200
+
+# Standard Next.js catch-all
+[[redirects]]
+  from   = "/*"
+  to     = "/.netlify/functions/___netlify-handler"
+  status = 200
+
+[functions]
+  # Free tier: synchronous only (no background functions)
+  node_bundler = "esbuild"
+
+[[headers]]
+  for    = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "s-maxage=120, stale-while-revalidate=60"

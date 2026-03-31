@@ -1,0 +1,53 @@
+:root {
+  --bg:       #09090f;
+  --bg2:      #111118;
+  --bg3:      #1a1a25;
+  --border:   #2a2a3a;
+  --accent:   #7c6aff;
+  --accent2:  #ff6b6b;
+  --accent3:  #00d2aa;
+  --text:     #e8e8f0;
+  --text-dim: #888899;
+  --font-mono: "Space Mono", monospace;
+  --font-body: "DM Sans", sans-serif;
+
+  /* Node colours by label */
+  --node-user:     #7c6aff;
+  --node-repo:     #ff6b6b;
+  --node-language: #00d2aa;
+  --node-topic:    #f0a500;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Utility */
+.mono { font-family: var(--font-mono); }
+.dim  { color: var(--text-dim); }
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tag-user     { background: color-mix(in srgb, var(--node-user)     20%, transparent); color: var(--node-user); }
+.tag-repo     { background: color-mix(in srgb, var(--node-repo)     20%, transparent); color: var(--node-repo); }
+.tag-language { background: color-mix(in srgb, var(--node-language) 20%, transparent); color: var(--node-language); }
+.tag-topic    { background: color-mix(in srgb, var(--node-topic)    20%, transparent); color: var(--node-topic); }
