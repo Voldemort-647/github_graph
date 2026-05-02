@@ -4,7 +4,8 @@ import { useEffect, useRef, useCallback } from "react";
 import type { GraphData, GraphNode, GraphEdge } from "@/lib/graph-queries";
 
 // D3 is loaded dynamically to avoid SSR issues
-type D3Selection = unknown;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type D3Selection = any;
 
 interface Props {
   data: GraphData;

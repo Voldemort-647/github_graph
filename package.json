@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 4000",
     "import": "ts-node --project tsconfig.scripts.json scripts/import-github.ts",
     "import:seed": "ts-node --project tsconfig.scripts.json scripts/import-github.ts --seed"
   },

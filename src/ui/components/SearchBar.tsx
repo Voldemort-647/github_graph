@@ -26,7 +26,7 @@ export default function SearchBar({ onSearch, loading }: Props) {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          placeholder="github username"
+          placeholder="search or add a user"
           className="search-input mono"
           disabled={loading}
           autoComplete="off"

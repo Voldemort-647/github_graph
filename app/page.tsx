@@ -15,27 +15,44 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [currentLogin, setCurrentLogin] = useState<string>("");
   const [hops, setHops] = useState(1);
+  const [toast, setToast] = useState<string | null>(null);
+  const [importStatus, setImportStatus] = useState<"idle" | "importing">("idle");
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 4000);
+  }, []);
 
   const loadUser = useCallback(async (login: string, hopsOverride?: number) => {
     if (!login.trim()) return;
     setLoading(true);
     setError(null);
     setSelectedNode(null);
+    setImportStatus("idle");
     const h = hopsOverride ?? hops;
 
     try {
       const res = await fetch(`/api/user/${encodeURIComponent(login.trim())}?hops=${h}`);
+
+      // Check if this was a live import (user wasn't in Neo4j before)
+      const graphSource = res.headers.get("X-Graph-Source");
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Failed to load graph");
       setGraphData(data as GraphData);
       setCurrentLogin(login.trim());
+
+      if (graphSource === "imported") {
+        showToast(`✨ @${login.trim()} was imported live from GitHub!`);
+      }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Unknown error");
       setGraphData(null);
     } finally {
       setLoading(false);
+      setImportStatus("idle");
     }
-  }, [hops]);
+  }, [hops, showToast]);
 
   const handleNodeClick = useCallback((node: GraphNode) => {
     setSelectedNode(node);
@@ -91,7 +108,9 @@ export default function HomePage() {
         {loading && (
           <div className="loading-overlay">
             <div className="loader-ring" />
-            <p className="mono dim" style={{fontSize:12,marginTop:16}}>QUERYING NEO4J…</p>
+            <p className="mono dim" style={{fontSize:12,marginTop:16}}>
+              {importStatus === "importing" ? "IMPORTING FROM GITHUB…" : "QUERYING NEO4J…"}
+            </p>
           </div>
         )}
 
@@ -112,6 +131,13 @@ export default function HomePage() {
         {/* ── Stats overlay ──────────────────────────────────────── */}
         {graphData && (
           <StatsBar data={graphData} login={currentLogin} />
+        )}
+
+        {/* ── Toast notification ──────────────────────────────────── */}
+        {toast && (
+          <div className="toast-notification">
+            {toast}
+          </div>
         )}
       </main>
 
@@ -227,6 +253,32 @@ export default function HomePage() {
           align-items: center;
           gap: 8px;
         }
+
+        .toast-notification {
+          position: absolute;
+          bottom: 80px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: color-mix(in srgb, var(--accent3) 15%, var(--bg2));
+          border: 1px solid color-mix(in srgb, var(--accent3) 40%, transparent);
+          color: var(--accent3);
+          padding: 10px 20px;
+          border-radius: 8px;
+          font-size: 12px;
+          font-family: var(--font-mono);
+          z-index: 20;
+          animation: toastIn 0.3s ease, toastOut 0.3s ease 3.5s forwards;
+          pointer-events: none;
+          white-space: nowrap;
+        }
+        @keyframes toastIn {
+          from { transform: translateX(-50%) translateY(10px); opacity: 0; }
+          to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+        }
+        @keyframes toastOut {
+          from { opacity: 1; }
+          to   { opacity: 0; }
+        }
       `}</style>
     </div>
   );
@@ -253,7 +305,7 @@ function EmptyState({ onSearch }: { onSearch: (login: string) => void }) {
         </svg>
       </div>
       <h2>GitHub Graph Explorer</h2>
-      <p className="dim">Search a GitHub username to explore their network,<br/>repositories, and contribution graph stored in Neo4j.</p>
+      <p className="dim">Search any GitHub username to explore their network,<br/>repositories, and contribution graph.<br/><span style={{fontSize:11,opacity:0.7}}>Users not in the database will be imported automatically.</span></p>
       <div className="seed-chips">
         <span className="dim mono" style={{fontSize:11}}>TRY →</span>
         {seeds.map(s => (
