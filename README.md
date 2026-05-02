@@ -53,7 +53,7 @@ repo/
 ### 1. Clone and install
 
 ```bash
-git clone <your-repo>
+git clone https://github.com/Voldemort-647/github_graph
 cd github-graph-explorer
 npm install
 ```
@@ -176,34 +176,6 @@ Returns overall graph statistics plus paginated user/repo lists.
 ### `GET /api/repo/:owner/:name`
 
 Returns detailed data for a single repository including contributors, languages, and topics.
-
----
-
-## Deployment
-
-### Vercel (recommended)
-
-1. Push your repo to GitHub.
-2. Import it at [vercel.com/new](https://vercel.com/new).
-3. Add the environment variables from `.env.example` in the Vercel dashboard.
-4. Deploy. Vercel auto-detects Next.js and wires up the `/app/api` route handlers.
-
-**Free tier limits to be aware of:**
-- Function duration: 10s (Hobby) — Neo4j queries are typically <1s
-- Bandwidth: 100 GB/month
-- Serverless invocations: 100 000/month
-
-### Netlify (alternative)
-
-1. Connect your repo at [app.netlify.com](https://app.netlify.com).
-2. Set the publish directory to `.next`.
-3. Add environment variables in Site settings → Environment variables.
-4. The `netlify.toml` redirect rules map `/api/*` to the functions in `netlify/functions/`.
-
-**Free tier limits:**
-- 125 000 function invocations/month
-- 100 GB bandwidth/month
-- Background functions not available on free tier (not needed here)
 
 ---
 
