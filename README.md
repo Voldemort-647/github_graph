@@ -53,8 +53,8 @@ repo/
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/Voldemort-647/github_graph
-cd github-graph-explorer
+git clone https://github.com/Voldemort-647/github_graph.git
+cd github_graph
 npm install
 ```
 
@@ -107,7 +107,7 @@ npm run import -- --user torvalds --skip-contributors
 
 ```bash
 npm run dev
-# → http://localhost:3000
+# → http://localhost:4000
 ```
 
 Search any imported username to explore their graph.
