@@ -16,6 +16,7 @@ import { upsertUser, upsertFollowsBatch, upsertRepo, upsertRepoLanguages, upsert
 import { initSchema } from "@/lib/neo4j";
 
 export const runtime = "nodejs"; // neo4j-driver requires Node.js runtime
+export const maxDuration = 30; // 30s limit to allow for GitHub auto-import
 
 export async function GET(
   request: NextRequest,
